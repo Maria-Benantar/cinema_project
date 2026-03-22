@@ -1,0 +1,26 @@
+Relazione / Documentazione — Gestione Film (Cinema)
+====================================================
+
+1. Obiettivo
+   Applicazione web per CRUD sulla tabella Film del database "cinema".
+
+2. Modello dati (schema d'esame)
+   - Sala: numero PK, posti, dimensioni, tipo 3D/tradizionale
+   - Film: codice PK, titolo, anno, durata, lingua
+   - Proiezione: collega sala e film, data e ora
+   - Biglietto: posto venduto per una proiezione (PK composta)
+
+3. Tecnologie
+   HTML5, CSS3, jQuery, AJAX, PHP, MySQL.
+
+4. File principali
+   - index.php: interfaccia CRUD Film
+   - css/style.css, js/script.js
+   - get_film.php, save_film.php, delete_film.php
+   - sql/database.sql: creazione tabelle e dati
+   - sql/query_esame.sql: query con GROUP BY e COUNT biglietti
+
+5. Test
+   Importare database.sql, configurare db_config.php, aprire index.php.
+
+(Completa con nome, corso, data se richiesto.)
