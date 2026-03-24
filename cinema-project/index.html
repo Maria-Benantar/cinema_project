@@ -2,10 +2,47 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=index.php">
-    <title>Reindirizzamento…</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema — Demo pubblica</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .demo-wrap { max-width: 980px; margin: 40px auto; padding: 0 16px; }
+        .demo-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 24px; box-shadow: 0 6px 18px rgba(0,0,0,.06); }
+        .demo-note { margin-top: 16px; color: #6b6b6b; line-height: 1.6; }
+        .demo-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .demo-table th, .demo-table td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+        .demo-table th { background: #fafafa; text-transform: uppercase; font-size: 12px; letter-spacing: .05em; color: #777; }
+    </style>
 </head>
-<body>
-    <p>Apri <a href="index.php">index.php</a> (la dashboard richiede PHP).</p>
+<body class="interfaccia-5 palette-bianca">
+    <div class="demo-wrap">
+        <div class="demo-card">
+            <h1>Progetto Cinema — Demo pubblica</h1>
+            <p class="demo-note">
+                Questa è la versione statica pubblicata online. La versione completa con PHP, MySQL e AJAX è inclusa nello ZIP del progetto.
+            </p>
+
+            <table class="demo-table">
+                <thead>
+                    <tr>
+                        <th>Codice</th>
+                        <th>Titolo</th>
+                        <th>Anno</th>
+                        <th>Durata</th>
+                        <th>Lingua</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Dune</td><td>2024</td><td>166</td><td>EN</td></tr>
+                    <tr><td>2</td><td>Oppenheimer</td><td>2023</td><td>180</td><td>EN</td></tr>
+                    <tr><td>3</td><td>Interstellar</td><td>2014</td><td>169</td><td>EN</td></tr>
+                </tbody>
+            </table>
+
+            <p class="demo-note">
+                Stack del progetto completo: HTML5, CSS3, jQuery, AJAX, PHP, MySQL.
+            </p>
+        </div>
+    </div>
 </body>
 </html>
