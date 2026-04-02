@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ proiezione.film.titolo }} - Cinema Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="page-title">{{ proiezione.film.titolo }}</h1>
+        <p class="lead text-muted">{{ proiezione.sala.nome }} - {{ proiezione.data_ora|date:"d/m/Y H:i" }}</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'proiezioni_modifica' proiezione.pk %}" class="btn btn-primary">Modifica</a>
+        <a href="{% url 'proiezioni_elimina' proiezione.pk %}" class="btn btn-danger" onclick="return confirm('Sei sicuro?')">Elimina</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Informazioni Proiezione</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <th>Film:</th>
+                        <td><a href="{% url 'film_dettaglio' proiezione.film.pk %}">{{ proiezione.film.titolo }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>Sala:</th>
+                        <td><a href="{% url 'sale_dettaglio' proiezione.sala.pk %}">{{ proiezione.sala.nome }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>Data e Ora:</th>
+                        <td>{{ proiezione.data_ora|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prezzo Biglietto:</th>
+                        <td>€ {{ proiezione.prezzo_biglietto }}</td>
+                    </tr>
+                    <tr>
+                        <th>Posti Disponibili:</th>
+                        <td>
+                            {% if proiezione.posti_disponibili > 0 %}
+                                <span class="badge badge-success">{{ proiezione.posti_disponibili }}</span>
+                            {% else %}
+                                <span class="badge badge-danger">Esaurito</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Mappa Posti</h5>
+            </div>
+            <div class="card-body">
+                <div class="seat-grid">
+                    {% for biglietto in biglietti %}
+                        <div class="seat {{ biglietto.stato }}" title="Fila {{ biglietto.numero_fila }} Posto {{ biglietto.numero_posto }}">
+                            {{ biglietto.numero_fila }}{{ biglietto.numero_posto }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-3">
+                    <p><span class="badge" style="background-color: #ffffff; border: 2px solid #27ae60; color: #2c3e50;">Disponibile</span></p>
+                    <p><span class="badge badge-warning">Prenotato</span></p>
+                    <p><span class="badge" style="background-color: #7f8c8d; color: white;">Venduto</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Statistiche</h5>
+            </div>
+            <div class="card-body">
+                {% with total=biglietti.count available=biglietti|dictsort:"stato"|length %}
+                    <table class="table table-sm table-borderless">
+                        <tr>
+                            <th>Posti Totali:</th>
+                            <td>{{ total }}</td>
+                        </tr>
+                        <tr>
+                            <th>Disponibili:</th>
+                            <td>
+                                {% with avail=biglietti|dictsort:"stato" %}
+                                    {{ avail|length }}
+                                {% endwith %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Prenotati:</th>
+                            <td>
+                                {% with reserved=biglietti|dictsort:"stato" %}
+                                    0
+                                {% endwith %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Venduti:</th>
+                            <td>
+                                {% with sold=biglietti|dictsort:"stato" %}
+                                    0
+                                {% endwith %}
+                            </td>
+                        </tr>
+                    </table>
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'proiezioni_lista' %}" class="btn btn-outline-secondary">Torna all'elenco</a>
+</div>
+{% endblock %}
