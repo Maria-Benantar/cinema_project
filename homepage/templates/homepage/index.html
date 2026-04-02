@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Cinema Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="page-title">Benvenuto nel Sistema di Gestione Cinema</h1>
+        <p class="lead text-muted">Gestisci sale, film, proiezioni e biglietti in modo semplice e intuitivo.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body stat-card">
+                <div class="stat-number">{{ num_sale }}</div>
+                <div class="stat-label">Sale</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body stat-card">
+                <div class="stat-number">{{ num_film }}</div>
+                <div class="stat-label">Film</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body stat-card">
+                <div class="stat-number">{{ num_proiezioni }}</div>
+                <div class="stat-label">Proiezioni</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body stat-card">
+                <div class="stat-number">{{ num_biglietti }}</div>
+                <div class="stat-label">Biglietti</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Gestione Sale</h5>
+            </div>
+            <div class="card-body">
+                <p>Crea, modifica e gestisci le sale cinematografiche del tuo cinema.</p>
+                <a href="/sale/" class="btn btn-primary">Vai alle Sale</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Catalogo Film</h5>
+            </div>
+            <div class="card-body">
+                <p>Aggiungi nuovi film al catalogo e gestisci le informazioni dettagliate.</p>
+                <a href="/film/" class="btn btn-primary">Vai ai Film</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Programmazione Proiezioni</h5>
+            </div>
+            <div class="card-body">
+                <p>Crea e gestisci le proiezioni dei film nelle varie sale.</p>
+                <a href="/proiezioni/" class="btn btn-primary">Vai alle Proiezioni</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Gestione Biglietti</h5>
+            </div>
+            <div class="card-body">
+                <p>Visualizza e gestisci i biglietti e la disponibilità dei posti.</p>
+                <a href="/biglietti/" class="btn btn-primary">Vai ai Biglietti</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
