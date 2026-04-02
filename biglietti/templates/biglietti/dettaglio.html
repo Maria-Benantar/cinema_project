@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Biglietto - Cinema Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="page-title">Biglietto {{ biglietto.numero_fila }}{{ biglietto.numero_posto }}</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        {% if biglietto.stato == 'available' %}
+            <a href="{% url 'biglietti_vendi' biglietto.pk %}" class="btn btn-success">Vendi</a>
+        {% else %}
+            <a href="{% url 'biglietti_libera' biglietto.pk %}" class="btn btn-warning">Libera</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Informazioni Biglietto</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <th>Proiezione:</th>
+                        <td>
+                            <a href="{% url 'proiezioni_dettaglio' biglietto.proiezione.pk %}">
+                                {{ biglietto.proiezione.film.titolo }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Sala:</th>
+                        <td>
+                            <a href="{% url 'sale_dettaglio' biglietto.proiezione.sala.pk %}">
+                                {{ biglietto.proiezione.sala.nome }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Data e Ora:</th>
+                        <td>{{ biglietto.proiezione.data_ora|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fila:</th>
+                        <td>{{ biglietto.numero_fila }}</td>
+                    </tr>
+                    <tr>
+                        <th>Posto:</th>
+                        <td>{{ biglietto.numero_posto }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prezzo:</th>
+                        <td>€ {{ biglietto.prezzo }}</td>
+                    </tr>
+                    <tr>
+                        <th>Stato:</th>
+                        <td>
+                            {% if biglietto.stato == 'available' %}
+                                <span class="badge" style="background-color: #ffffff; border: 1px solid #27ae60; color: #27ae60;">Disponibile</span>
+                            {% elif biglietto.stato == 'reserved' %}
+                                <span class="badge badge-warning">Prenotato</span>
+                            {% else %}
+                                <span class="badge" style="background-color: #7f8c8d; color: white;">Venduto</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if biglietto.data_vendita %}
+                        <tr>
+                            <th>Data Vendita:</th>
+                            <td>{{ biglietto.data_vendita|date:"d/m/Y H:i" }}</td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Azioni</h5>
+            </div>
+            <div class="card-body">
+                {% if biglietto.stato == 'available' %}
+                    <p class="text-muted">Questo biglietto è disponibile e può essere venduto.</p>
+                    <a href="{% url 'biglietti_vendi' biglietto.pk %}" class="btn btn-success w-100">Vendi Biglietto</a>
+                {% elif biglietto.stato == 'reserved' %}
+                    <p class="text-muted">Questo biglietto è stato prenotato.</p>
+                    <a href="{% url 'biglietti_libera' biglietto.pk %}" class="btn btn-warning w-100">Annulla Prenotazione</a>
+                {% else %}
+                    <p class="text-muted">Questo biglietto è stato venduto.</p>
+                    <a href="{% url 'biglietti_libera' biglietto.pk %}" class="btn btn-warning w-100">Annulla Vendita</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'biglietti_lista' %}" class="btn btn-outline-secondary">Torna all'elenco</a>
+</div>
+{% endblock %}

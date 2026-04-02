@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Biglietti - Cinema Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="page-title">Gestione Biglietti</h1>
+    </div>
+</div>
+
+<div class="filter-section">
+    <h5 class="mb-3">Filtri</h5>
+    <form method="GET" class="row g-3">
+        <div class="col-md-6">
+            <label for="proiezione" class="form-label">Proiezione</label>
+            <select class="form-select" id="proiezione" name="proiezione">
+                <option value="">-- Tutte le proiezioni --</option>
+                {% for p in proiezioni %}
+                    <option value="{{ p.pk }}" {% if proiezione_selezionata == p.pk|stringformat:"s" %}selected{% endif %}>
+                        {{ p.film.titolo }} - {{ p.sala.nome }} ({{ p.data_ora|date:"d/m/Y H:i" }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="stato" class="form-label">Stato</label>
+            <select class="form-select" id="stato" name="stato">
+                <option value="">-- Tutti gli stati --</option>
+                <option value="available" {% if stato_selezionato == "available" %}selected{% endif %}>Disponibile</option>
+                <option value="reserved" {% if stato_selezionato == "reserved" %}selected{% endif %}>Prenotato</option>
+                <option value="sold" {% if stato_selezionato == "sold" %}selected{% endif %}>Venduto</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Filtra</button>
+            <a href="{% url 'biglietti_lista' %}" class="btn btn-outline-secondary">Resetta</a>
+        </div>
+    </form>
+</div>
+
+{% if biglietti %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Proiezione</th>
+                    <th>Fila</th>
+                    <th>Posto</th>
+                    <th>Stato</th>
+                    <th>Prezzo</th>
+                    <th>Data Vendita</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for biglietto in biglietti %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'proiezioni_dettaglio' biglietto.proiezione.pk %}">
+                                {{ biglietto.proiezione.film.titolo }}
+                            </a>
+                        </td>
+                        <td>{{ biglietto.numero_fila }}</td>
+                        <td>{{ biglietto.numero_posto }}</td>
+                        <td>
+                            {% if biglietto.stato == 'available' %}
+                                <span class="badge" style="background-color: #ffffff; border: 1px solid #27ae60; color: #27ae60;">Disponibile</span>
+                            {% elif biglietto.stato == 'reserved' %}
+                                <span class="badge badge-warning">Prenotato</span>
+                            {% else %}
+                                <span class="badge" style="background-color: #7f8c8d; color: white;">Venduto</span>
+                            {% endif %}
+                        </td>
+                        <td>€ {{ biglietto.prezzo }}</td>
+                        <td>
+                            {% if biglietto.data_vendita %}
+                                {{ biglietto.data_vendita|date:"d/m/Y H:i" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'biglietti_dettaglio' biglietto.pk %}" class="btn btn-sm btn-outline-secondary">Dettagli</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <p>Nessun biglietto trovato.</p>
+    </div>
+{% endif %}
+{% endblock %}
