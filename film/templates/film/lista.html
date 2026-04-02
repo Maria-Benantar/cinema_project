@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Film - Cinema Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="page-title">Catalogo Film</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'film_crea' %}" class="btn btn-primary">+ Nuovo Film</a>
+    </div>
+</div>
+
+<div class="filter-section">
+    <h5 class="mb-3">Filtri</h5>
+    <form method="GET" class="row g-3">
+        <div class="col-md-6">
+            <label for="genere" class="form-label">Genere</label>
+            <select class="form-select" id="genere" name="genere">
+                <option value="">-- Tutti i generi --</option>
+                {% for g in generi %}
+                    <option value="{{ g }}" {% if genere_selezionato == g %}selected{% endif %}>{{ g }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="anno" class="form-label">Anno</label>
+            <select class="form-select" id="anno" name="anno">
+                <option value="">-- Tutti gli anni --</option>
+                {% for a in anni %}
+                    <option value="{{ a }}" {% if anno_selezionato == a|stringformat:"s" %}selected{% endif %}>{{ a }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Filtra</button>
+            <a href="{% url 'film_lista' %}" class="btn btn-outline-secondary">Resetta</a>
+        </div>
+    </form>
+</div>
+
+{% if film %}
+    <div class="row">
+        {% for f in film %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'film_dettaglio' f.pk %}">{{ f.titolo }}</a>
+                        </h5>
+                        <p class="card-text text-muted">{{ f.descrizione|truncatewords:20 }}</p>
+                        <table class="table table-sm table-borderless">
+                            <tr>
+                                <th>Regista:</th>
+                                <td>{{ f.regista }}</td>
+                            </tr>
+                            <tr>
+                                <th>Genere:</th>
+                                <td><span class="badge badge-info">{{ f.genere }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>Durata:</th>
+                                <td>{{ f.durata_minuti }} min</td>
+                            </tr>
+                            <tr>
+                                <th>Anno:</th>
+                                <td>{{ f.anno_uscita }}</td>
+                            </tr>
+                            <tr>
+                                <th>Rating:</th>
+                                <td>⭐ {{ f.rating }}/10</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <a href="{% url 'film_modifica' f.pk %}" class="btn btn-sm btn-outline-secondary">Modifica</a>
+                        <a href="{% url 'film_elimina' f.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('Sei sicuro?')">Elimina</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <p>Nessun film trovato. <a href="{% url 'film_crea' %}">Aggiungi un nuovo film</a></p>
+    </div>
+{% endif %}
+{% endblock %}

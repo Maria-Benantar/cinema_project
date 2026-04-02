@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ film.titolo }} - Cinema Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="page-title">{{ film.titolo }}</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'film_modifica' film.pk %}" class="btn btn-primary">Modifica</a>
+        <a href="{% url 'film_elimina' film.pk %}" class="btn btn-danger" onclick="return confirm('Sei sicuro?')">Elimina</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Informazioni Film</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <th>Regista:</th>
+                        <td>{{ film.regista }}</td>
+                    </tr>
+                    <tr>
+                        <th>Genere:</th>
+                        <td><span class="badge badge-info">{{ film.genere }}</span></td>
+                    </tr>
+                    <tr>
+                        <th>Durata:</th>
+                        <td>{{ film.durata_minuti }} minuti</td>
+                    </tr>
+                    <tr>
+                        <th>Anno Uscita:</th>
+                        <td>{{ film.anno_uscita }}</td>
+                    </tr>
+                    <tr>
+                        <th>Rating:</th>
+                        <td>⭐ {{ film.rating }}/10</td>
+                    </tr>
+                </table>
+
+                {% if film.descrizione %}
+                    <div class="mt-4">
+                        <h6>Descrizione</h6>
+                        <p>{{ film.descrizione }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Proiezioni</h5>
+            </div>
+            <div class="card-body">
+                {% if film.proiezioni.all %}
+                    <ul class="list-group list-group-flush">
+                        {% for proiezione in film.proiezioni.all %}
+                            <li class="list-group-item">
+                                <a href="{% url 'proiezioni_dettaglio' proiezione.pk %}">
+                                    {{ proiezione.sala.nome }}
+                                </a>
+                                <br>
+                                <small class="text-muted">{{ proiezione.data_ora|date:"d/m/Y H:i" }}</small>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nessuna proiezione programmata per questo film.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'film_lista' %}" class="btn btn-outline-secondary">Torna al catalogo</a>
+</div>
+{% endblock %}
