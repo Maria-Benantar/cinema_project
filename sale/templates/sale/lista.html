@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Sale - Cinema Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="page-title">Gestione Sale</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'sale_crea' %}" class="btn btn-primary">+ Nuova Sala</a>
+    </div>
+</div>
+
+{% if sale %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Numero Posti</th>
+                    <th>File</th>
+                    <th>Posti per Fila</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in sale %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'sale_dettaglio' s.pk %}">{{ s.nome }}</a>
+                        </td>
+                        <td>{{ s.numero_posti }}</td>
+                        <td>{{ s.numero_file }}</td>
+                        <td>{{ s.posti_per_fila }}</td>
+                        <td>
+                            <a href="{% url 'sale_modifica' s.pk %}" class="btn btn-sm btn-outline-secondary">Modifica</a>
+                            <a href="{% url 'sale_elimina' s.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('Sei sicuro?')">Elimina</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <p>Non ci sono sale registrate. <a href="{% url 'sale_crea' %}">Crea una nuova sala</a></p>
+    </div>
+{% endif %}
+{% endblock %}

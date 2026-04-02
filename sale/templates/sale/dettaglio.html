@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ sala.nome }} - Cinema Management System{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="page-title">{{ sala.nome }}</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'sale_modifica' sala.pk %}" class="btn btn-primary">Modifica</a>
+        <a href="{% url 'sale_elimina' sala.pk %}" class="btn btn-danger" onclick="return confirm('Sei sicuro?')">Elimina</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Informazioni Sala</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <th>Numero Posti:</th>
+                        <td>{{ sala.numero_posti }}</td>
+                    </tr>
+                    <tr>
+                        <th>Numero File:</th>
+                        <td>{{ sala.numero_file }}</td>
+                    </tr>
+                    <tr>
+                        <th>Posti per Fila:</th>
+                        <td>{{ sala.posti_per_fila }}</td>
+                    </tr>
+                    <tr>
+                        <th>Creata:</th>
+                        <td>{{ sala.created_at|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Aggiornata:</th>
+                        <td>{{ sala.updated_at|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Proiezioni in questa Sala</h5>
+            </div>
+            <div class="card-body">
+                {% if sala.proiezioni.all %}
+                    <ul class="list-group list-group-flush">
+                        {% for proiezione in sala.proiezioni.all %}
+                            <li class="list-group-item">
+                                <a href="{% url 'proiezioni_dettaglio' proiezione.pk %}">
+                                    {{ proiezione.film.titolo }}
+                                </a>
+                                <br>
+                                <small class="text-muted">{{ proiezione.data_ora|date:"d/m/Y H:i" }}</small>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nessuna proiezione programmata in questa sala.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'sale_lista' %}" class="btn btn-outline-secondary">Torna all'elenco</a>
+</div>
+{% endblock %}
